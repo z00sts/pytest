@@ -121,7 +121,8 @@ def main(args=None, plugins=None) -> Union[int, ExitCode]:
             return ExitCode.USAGE_ERROR
         else:
             try:
-                ret = config.hook.pytest_cmdline_main(
+                hook = config.hook
+                ret = hook.pytest_cmdline_main(
                     config=config
                 )  # type: Union[ExitCode, int]
                 try:

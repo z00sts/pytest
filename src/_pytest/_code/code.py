@@ -775,7 +775,8 @@ class FormattedExcinfo:
             source = _pytest._code.Source("???")
             line_index = 0
         else:
-            line_index = entry.lineno - entry.getfirstlinesource()
+            # line_index = entry.relline
+            line_index = entry._rawentry.tb_lineno - entry.getfirstlinesource()
 
         lines = []  # type: List[str]
         style = entry._repr_style if entry._repr_style is not None else self.style
@@ -789,7 +790,7 @@ class FormattedExcinfo:
             else:
                 message = excinfo and excinfo.typename or ""
             path = self._makepath(entry.path)
-            reprfileloc = ReprFileLocation(path, entry.lineno + 1, message)
+            reprfileloc = ReprFileLocation(path, line_index + 1, message)
             localsrepr = self.repr_locals(entry.locals)
             return ReprEntry(lines, reprargs, localsrepr, reprfileloc, style)
         if excinfo:
